@@ -63,7 +63,11 @@ def ollama_post(system_prompt, user_prompt, model=MODEL):
 
 def search_exploit_procedure():
     """Search DuckDuckGo and get exploit procedure"""
-    query = input(Fore.CYAN + "[?] Enter your search query: ")
+    query = input(Fore.CYAN + "[?] Enter your search query: ").strip()
+    if not query:
+       print(Fore.YELLOW + "[!] Returning to main menu ...")
+       return
+    print(Fore.GREEN + f"[+] Searching for: {query}")
     log_activity("user", f"Search query: {query}")
     
     with DDGS() as ddgs:
@@ -87,7 +91,11 @@ def search_exploit_procedure():
 
 def analyze_findings():
     """Analyze findings and provide suggestions"""
-    findings = input(Fore.CYAN + "[?] Paste your findings here: ")
+    findings = input(Fore.CYAN + "[?] Paste your findings here: ").strip()
+    if not findings:
+        print(Fore.YELLOW + "[!] Returning to main menu ...")
+        return
+    print(Fore.GREEN + f"[+] Analyzing: {findings}")
     log_activity("user", f"Findings submitted: {findings}")
     
     system_prompt = """You are a senior security analyst. Review these findings and:
@@ -107,7 +115,11 @@ def analyze_findings():
 
 def brainstorm_problem():
     """Brainstorm solutions for complex problems"""
-    problem = input(Fore.CYAN + "[?] Describe the problem you're facing: ")
+    problem = input(Fore.CYAN + "[?] Describe the problem you're facing: ").strip()
+    if not problem:
+        print(Fore.YELLOW + "[!] Returning to main menu ...")
+        return
+    print(Fore.GREEN + F"[+] Brainstorming: {problem}")
     log_activity("user", f"Problem description: {problem}")
     
     system_prompt = """You are a creative cybersecurity expert. For the given problem:
@@ -127,7 +139,11 @@ def brainstorm_problem():
 
 def suggest_tools():
     """Recommend tools with usage instructions"""
-    task = input(Fore.CYAN + "[?] What task do you need to perform? ")
+    task = input(Fore.CYAN + "[?] What task do you need to perform? ").strip()
+    if not task:
+        print(Fore.YELLOW + "[!] Returning to main menu ...")
+        return
+    print(Fore.GREEN + f"[+] Recommending: {task}")
     log_activity("user", f"Task for tool suggestion: {task}")
     
     system_prompt = """You are a penetration testing tools expert. For the given task:
@@ -178,7 +194,7 @@ def main():
         print(Fore.WHITE + "4. Suggest Tools")
         print(Fore.RED + "0. Exit")
         
-        choice = input(Fore.YELLOW + "\n[?] Enter your choice (0-4): ")
+        choice = input(Fore.YELLOW + "\n[?] Enter your choice (0-4): ").strip()
         log_activity("user", f"Menu choice selected: {choice}")
         
         if choice == '1':
