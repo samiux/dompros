@@ -125,6 +125,7 @@ Run the following command and follows the instruction on the screen.
 ./dompros.py
 ```
 
+```
 [+] Ollama is ready!
 
     ▓█████▄  ▒█████   ███▄ ▄███▓ ██▓███   ██▀███   ▒█████   ██████ 
@@ -150,6 +151,7 @@ Main Menu:
 0. Exit
 
 [?] Enter your choice (0-4): 
+```
 
 The ```pentest_assistant.log``` can be found at the current directory.
 
