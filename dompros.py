@@ -52,7 +52,7 @@ def ollama_post(system_prompt, user_prompt, model=MODEL):
                 "system": system_prompt,
                 "prompt": user_prompt,
                 "stream": False,
-		"temperature": 0.7
+		"temperature": 0.6
             }
         )
         log_activity("system", f"Ollama response received: {response.status_code}")
@@ -79,7 +79,7 @@ def search_exploit_procedure():
     2. Step-by-step exploitation procedure
     3. Example and actual payloads
     4. Recommended mitigation strategies
-    5. List the websites with URLs that have been accessed, read and referred"""
+    5. List all the websites with URLs that have been read and/or referred"""
     
     response = ollama_post(
         system_prompt,
@@ -189,10 +189,10 @@ def main():
     
     while True:
         print(Fore.BLUE + "\nMain Menu:")
-        print(Fore.WHITE + "1. Search Exploit Procedure")
-        print(Fore.WHITE + "2. Analyze Findings")
-        print(Fore.WHITE + "3. Brainstorm Problem")
-        print(Fore.WHITE + "4. Suggest Tools")
+        print(Fore.GREEN + "1. Search Exploit Procedure")
+        print(Fore.GREEN + "2. Analyze Findings")
+        print(Fore.GREEN + "3. Brainstorm Problem")
+        print(Fore.GREEN + "4. Suggest Tools")
         print(Fore.RED + "0. Exit")
         
         choice = input(Fore.YELLOW + "\n[?] Enter your choice (0-4): ").strip()
