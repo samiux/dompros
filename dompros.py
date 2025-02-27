@@ -188,7 +188,7 @@ def main():
     print_banner()
     
     while True:
-        print(Fore.BLUE + "\nMain Menu:")
+        print(Fore.CYAN + "\nMain Menu:")
         print(Fore.GREEN + "1. Search Exploit Procedure")
         print(Fore.GREEN + "2. Analyze Findings")
         print(Fore.GREEN + "3. Brainstorm Problem")
