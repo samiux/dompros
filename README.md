@@ -70,7 +70,7 @@ sudo apt install docker-ce
 
 ### 0x03 Ollama
 
-The configuration can run on any CPU with 8GB RAM.
+The configuration can run on any CPU with 16GB RAM.
 
 ```
 sudo docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama --restart always ollama/ollama
