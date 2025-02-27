@@ -56,6 +56,11 @@ def ollama_post(system_prompt, user_prompt, model=MODEL):
 		"temperature": 0.7
             }
         )
+	if response.status_code == 404:
+            print(Fore.RED + "[!] " + MODEL + " not found, try to pull it first!")
+            log_activity("system", MODEL + " not found.  Respone error.")
+            quit()
+		
         log_activity("system", f"Ollama response received: {response.status_code}")
         return response.json()['response']
     except Exception as e:
@@ -72,7 +77,7 @@ def search_exploit_procedure():
     log_activity("user", f"Search query: {query}")
     
     with DDGS() as ddgs:
-        results = [r for r in ddgs.text(query, max_results=5)]
+        results = [r for r in ddgs.text(query, max_results=10)]
         log_activity("system", f"DuckDuckGo search results: {results}")
     
     system_prompt = """You are an AI penetration testing expert. Analyze these search results and provide:
