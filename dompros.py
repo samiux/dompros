@@ -77,7 +77,7 @@ def search_exploit_procedure():
     system_prompt = """You are an AI penetration testing expert. Analyze these search results and provide:
     1. Potential vulnerabilities
     2. Step-by-step exploitation procedure
-    3. Example and actual payloads
+    3. Example and actual payloads and/or scripts
     4. Recommended mitigation strategies
     5. Cover all the websites with URLs that have been read and/or referred"""
     
