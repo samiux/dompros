@@ -147,7 +147,7 @@ deactivate
        ░        ░ ░         ░               ░         ░ ░        ░  
     
 	AI-Powered Penetration Testing Assistant
-	DOMPROS Version 1.0 | Copyright DeepSeek R1
+	DOMPROS Version 1.0.1 | Copyright DeepSeek R1
 	Dated Feb 26, 2025
 
 
@@ -170,6 +170,11 @@ You can either use ```deepseek-r1:7b (DeepSeek-R1-Distill-Qwen-7B)``` or ```deep
 ## ChangeLog
 
 Version 1.0.0 - Feb 26, 2025 First release.
+Version 1.0.1 - Feb 28, 2025 Enhanced the "Search Exploit Procedure" to provide URLs.
+
+## Known Issues
+
+- It may provide the answer in Chinese or with some Chinese characters when it read some Chinese content websites or refers to a Chinese website. 
 
 ## License
 
