@@ -52,7 +52,7 @@ def ollama_post(system_prompt, user_prompt, model=MODEL):
                 "system": system_prompt,
                 "prompt": user_prompt,
                 "stream": False,
-		"temperature": 0.6
+		"temperature": 0.7
             }
         )
         log_activity("system", f"Ollama response received: {response.status_code}")
@@ -79,7 +79,7 @@ def search_exploit_procedure():
     2. Step-by-step exploitation procedure
     3. Example and actual payloads and/or scripts
     4. Recommended mitigation strategies
-    5. Cover all the websites with URLs that have been read and/or referred"""
+    5. List all the websites with URLs that have been read and/or referred"""
     
     response = ollama_post(
         system_prompt,
