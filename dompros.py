@@ -78,7 +78,8 @@ def search_exploit_procedure():
     1. Potential vulnerabilities
     2. Step-by-step exploitation procedure
     3. Example and actual payloads
-    4. Recommended mitigation strategies"""
+    4. Recommended mitigation strategies
+    5. List the URLs/websites have been read/referred"""
     
     response = ollama_post(
         system_prompt,
@@ -176,8 +177,8 @@ def print_banner():
        ░        ░ ░         ░               ░         ░ ░        ░  
     """)
     print(Fore.CYAN +  "	AI-Powered Penetration Testing Assistant")
-    print(Fore.GREEN + "	DOMPROS Version 1.0 | Copyright DeepSeek R1")
-    print(Fore.GREEN + "	Dated Feb 26, 2025\n")
+    print(Fore.GREEN + "	DOMPROS Version 1.0.1 | Copyright DeepSeek R1")
+    print(Fore.GREEN + "	Dated Feb 28, 2025\n")
     log_activity("system", "Pentest Assistant started.")
 
 def main():
