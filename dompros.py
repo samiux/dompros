@@ -57,8 +57,8 @@ def ollama_post(system_prompt, user_prompt, model=MODEL):
             }
         )
         if response.status_code == 404:
-            print(Fore.RED + "[!] " + MODEL + " not found, try to pull it first!")
-            log_activity("system", MODEL + " not found.  Respone error.")
+            print(Fore.RED + f"[!] {model} not found, try to pull it first!")
+            log_activity("system", f"{model} not found.  Response error.")
             quit()
 		
         log_activity("system", f"Ollama response received: {response.status_code}")
