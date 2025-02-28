@@ -56,7 +56,7 @@ def ollama_post(system_prompt, user_prompt, model=MODEL):
 		"temperature": 0.7
             }
         )
-	if response.status_code == 404:
+        if response.status_code == 404:
             print(Fore.RED + "[!] " + MODEL + " not found, try to pull it first!")
             log_activity("system", MODEL + " not found.  Respone error.")
             quit()
