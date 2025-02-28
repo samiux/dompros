@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+#######################################################
+# DOMPROS - AI-Powered Penetrattion Testing Assistant #
+# Copyright (c) DeepSeek R1 & Samiux (MIT License)    #
+#                                                     #
+# Version 1.0.1 Dated Feb 28, 2025                    #
+#                                                     #
+# Powered by DeepSeek R1 and Ollama                   #
+#######################################################
+
 import requests
 import logging
 from colorama import Fore, Style, init
@@ -32,7 +41,8 @@ def check_ollama():
         response = requests.get('http://localhost:11434')
         if response.status_code == 200:
             print(Fore.GREEN + "[+] Ollama is ready!")
-            log_activity("system", "Ollama is running and ready.")
+            print(Fore.CYAN + "[+] " + MODEL + " to be loaded!")
+            log_activity("system", f"Ollama is running and is ready.  " + MODEL + " to be loaded.")
             return True
     except requests.ConnectionError:
         print(Fore.RED + "[!] Ollama not running! Please start Ollama first.")
@@ -58,7 +68,7 @@ def ollama_post(system_prompt, user_prompt, model=MODEL):
         )
         if response.status_code == 404:
             print(Fore.RED + f"[!] {model} not found, try to pull it first!")
-            log_activity("system", f"{model} not found.  Response error.")
+            log_activity("system", f"{model} not found.  Respone error.")
             quit()
 		
         log_activity("system", f"Ollama response received: {response.status_code}")
@@ -69,7 +79,7 @@ def ollama_post(system_prompt, user_prompt, model=MODEL):
 
 def search_exploit_procedure():
     """Search DuckDuckGo and get exploit procedure"""
-    query = input(Fore.CYAN + "[?] Enter your search query: ").strip()
+    query = input(Fore.CYAN + "[?] Enter your search query (DuckDuckGo): ").strip()
     if not query:
        print(Fore.YELLOW + "[!] Returning to main menu ...")
        return
@@ -99,17 +109,23 @@ def search_exploit_procedure():
 
 def analyze_findings():
     """Analyze findings and provide suggestions"""
-    findings = input(Fore.CYAN + "[?] Paste your findings here: ").strip()
-    if not findings:
+    findings = []
+    finding = input(Fore.CYAN + "[?] Paste your findings here (multi-lines): ").strip()
+    if not finding:
         print(Fore.YELLOW + "[!] Returning to main menu ...")
         return
+    while finding := input().strip():
+        if not finding:
+            break
+        findings.append(finding)
+
     print(Fore.GREEN + f"[+] Analyzing: {findings}")
     log_activity("user", f"Findings submitted: {findings}")
     
     system_prompt = """You are a senior security analyst. Review these findings and:
     1. Identify critical vulnerabilities
     2. Suggest verification methods
-    3. Provide exploitation steps with exact payloads
+    3. Provide exploitation steps with actual payloads
     4. Recommend tools for further testing"""
     
     response = ollama_post(
@@ -121,14 +137,20 @@ def analyze_findings():
     print(Fore.WHITE + response)
     log_activity("system", f"Analysis completed: {response}")
 
-def brainstorm_problem():
+def brainstorm_problems():
     """Brainstorm solutions for complex problems"""
-    problem = input(Fore.CYAN + "[?] Describe the problem you're facing: ").strip()
+    problems = []
+    problem = input(Fore.CYAN + "[?] Describe the problem you're facing (multi-lines): ").strip()
     if not problem:
         print(Fore.YELLOW + "[!] Returning to main menu ...")
         return
-    print(Fore.GREEN + F"[+] Brainstorming: {problem}")
-    log_activity("user", f"Problem description: {problem}")
+    while problem := input().strip():
+        if not problem:
+            break
+        problems.append(problem)
+
+    print(Fore.GREEN + F"[+] Brainstorming: {problems}")
+    log_activity("user", f"Problem description: {problems}")
     
     system_prompt = """You are a creative cybersecurity expert. For the given problem:
     1. Suggest multiple attack vectors
@@ -138,7 +160,7 @@ def brainstorm_problem():
     
     response = ollama_post(
         system_prompt,
-        f"Problem: {problem}\n\nProvide brainstorming solutions:"
+        f"Problem: {problems}\n\nProvide brainstorming solutions:"
     )
     
     print(Fore.YELLOW + "\n[AI Brainstorming]")
@@ -147,12 +169,18 @@ def brainstorm_problem():
 
 def suggest_tools():
     """Recommend tools with usage instructions"""
-    task = input(Fore.CYAN + "[?] What task do you need to perform? ").strip()
+    tasks = []
+    task = input(Fore.CYAN + "[?] What task do you need to perform (multi-lines)? ").strip()
     if not task:
         print(Fore.YELLOW + "[!] Returning to main menu ...")
         return
-    print(Fore.GREEN + f"[+] Recommending: {task}")
-    log_activity("user", f"Task for tool suggestion: {task}")
+    while task := input().strip():
+        if not task:
+            break
+        tasks.append(task)
+
+    print(Fore.GREEN + f"[+] Recommending: {tasks}")
+    log_activity("user", f"Task for tool suggestion: {tasks}")
     
     system_prompt = """You are a penetration testing tools expert. For the given task:
     1. Recommend appropriate tools
@@ -163,7 +191,7 @@ def suggest_tools():
     
     response = ollama_post(
         system_prompt,
-        f"Task: {task}\n\nRecommend tools:"
+        f"Task: {tasks}\n\nRecommend tools:"
     )
     
     print(Fore.YELLOW + "\n[AI Tool Recommendations]")
@@ -210,7 +238,7 @@ def main():
         elif choice == '2':
             analyze_findings()
         elif choice == '3':
-            brainstorm_problem()
+            brainstorm_problems()
         elif choice == '4':
             suggest_tools()
         elif choice == '0':
