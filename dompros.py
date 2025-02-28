@@ -7,6 +7,7 @@
 # Version 1.0.1 Dated Feb 28, 2025                    #
 #                                                     #
 # Powered by DeepSeek R1 and Ollama                   #
+# Website - https://samiux.github.io/dompros          #
 #######################################################
 
 import requests
@@ -17,9 +18,11 @@ import time
 import subprocess
 
 # Initialize Model
+#MODEL="deepseek-r1:1.5b"	# DeepSeek-R1-Distill-Qwen-1.5B
 MODEL="deepseek-r1:7b"		# DeepSeek-R1-Distill-Qwen-7B
 #MODEL="deepseek-r1:14b"	# DeepSeek-R1-Distill-Qwen-14B
 #MODEL="deepseek-r1:8b"		# DeepSeek-R1-Distill-Llama-8B
+#MODEL="llama3:8b"		# LIama 3 8B
 
 # Initialize colorama
 init(autoreset=True)
@@ -90,7 +93,7 @@ def search_exploit_procedure():
         results = [r for r in ddgs.text(query, max_results=10)]
         log_activity("system", f"DuckDuckGo search results: {results}")
     
-    system_prompt = """You are an AI penetration testing expert. Analyze these search results and provide:
+    system_prompt = """You are an AI penetration testing expert. You are very intelligent and reference lots of deep knowledge. You must speak in English. Analyze these search results and provide:
     1. Potential vulnerabilities
     2. Proof-of-Concept (PoC) sources and links
     3. Step-by-step exploitation procedure
@@ -111,6 +114,7 @@ def analyze_findings():
     """Analyze findings and provide suggestions"""
     findings = []
     finding = input(Fore.CYAN + "[?] Paste your findings here (multi-lines): ").strip()
+    findings.append(finding)
     if not finding:
         print(Fore.YELLOW + "[!] Returning to main menu ...")
         return
@@ -122,7 +126,7 @@ def analyze_findings():
     print(Fore.GREEN + f"[+] Analyzing: {findings}")
     log_activity("user", f"Findings submitted: {findings}")
     
-    system_prompt = """You are a senior security analyst. Review these findings and:
+    system_prompt = """You are a senior security analyst. You are very intelligent and reference lots of deep knowledge. You must speak in English. Review these findings and:
     1. Identify critical vulnerabilities
     2. Suggest verification methods
     3. Provide exploitation steps with actual payloads
@@ -141,6 +145,7 @@ def brainstorm_problems():
     """Brainstorm solutions for complex problems"""
     problems = []
     problem = input(Fore.CYAN + "[?] Describe the problem you're facing (multi-lines): ").strip()
+    problems.append(problem)
     if not problem:
         print(Fore.YELLOW + "[!] Returning to main menu ...")
         return
@@ -152,7 +157,7 @@ def brainstorm_problems():
     print(Fore.GREEN + F"[+] Brainstorming: {problems}")
     log_activity("user", f"Problem description: {problems}")
     
-    system_prompt = """You are a creative cybersecurity expert. For the given problem:
+    system_prompt = """You are a creative cybersecurity expert. You are very intelligent and reference lots of deep knowledge. You must speak in English. For the given problem:
     1. Suggest multiple attack vectors
     2. Propose unconventional testing methods
     3. Identify potential misconfigurations
@@ -171,6 +176,7 @@ def suggest_tools():
     """Recommend tools with usage instructions"""
     tasks = []
     task = input(Fore.CYAN + "[?] What task do you need to perform (multi-lines)? ").strip()
+    tasks.append(task)
     if not task:
         print(Fore.YELLOW + "[!] Returning to main menu ...")
         return
@@ -182,7 +188,7 @@ def suggest_tools():
     print(Fore.GREEN + f"[+] Recommending: {tasks}")
     log_activity("user", f"Task for tool suggestion: {tasks}")
     
-    system_prompt = """You are a penetration testing tools expert. For the given task:
+    system_prompt = """You are a penetration testing tools expert. You are very intelligent and reference lots of deep knowledge. You must speak in English. For the given task:
     1. Recommend appropriate tools
     2. Provide installation commands
     3. Give usage examples with command-line options
