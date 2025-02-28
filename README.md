@@ -173,7 +173,7 @@ You can use ```deepseek-r1:7b (DeepSeek-R1-Distill-Qwen-7B)``` or ```deepseek-r1
 ## ChangeLog
 
 Version 0.0.1 - Feb 26, 2025 First release.  
-Version 0.0.2 - Feb 28, 2025 Enhanced the "Search Exploit Procedure" and some minor changes.  
+Version 0.0.2 - Feb 28, 2025 Enhancement and some minor changes.  
 
 ## License
 
