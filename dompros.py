@@ -18,11 +18,9 @@ import time
 import subprocess
 
 # Initialize Model
-#MODEL="deepseek-r1:1.5b"	# DeepSeek-R1-Distill-Qwen-1.5B
 MODEL="deepseek-r1:7b"		# DeepSeek-R1-Distill-Qwen-7B
 #MODEL="deepseek-r1:14b"	# DeepSeek-R1-Distill-Qwen-14B
 #MODEL="deepseek-r1:8b"		# DeepSeek-R1-Distill-Llama-8B
-#MODEL="llama3:8b"		# LIama 3 8B
 
 # Initialize colorama
 init(autoreset=True)
