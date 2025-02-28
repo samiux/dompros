@@ -82,11 +82,11 @@ def search_exploit_procedure():
     
     system_prompt = """You are an AI penetration testing expert. Analyze these search results and provide:
     1. Potential vulnerabilities
-    2. Proof-of-Concept (PoC) sources
+    2. Proof-of-Concept (PoC) sources and links
     3. Step-by-step exploitation procedure
     4. Example and actual payloads and/or scripts
     5. Recommended mitigation strategies
-    6. All the websites with URLs that you have been read and/or referred"""
+    6. List of the websites with URLs that you have been read and/or referred"""
     
     response = ollama_post(
         system_prompt,
