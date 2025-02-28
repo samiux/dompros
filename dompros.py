@@ -86,7 +86,7 @@ def search_exploit_procedure():
     3. Step-by-step exploitation procedure
     4. Example and actual payloads and/or scripts
     5. Recommended mitigation strategies
-    6. List of the websites with URLs that you have been read and/or referred"""
+    6. List of all websites with URLs that you have been read and/or referred"""
     
     response = ollama_post(
         system_prompt,
