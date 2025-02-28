@@ -184,7 +184,7 @@ def print_banner():
        ░        ░ ░         ░               ░         ░ ░        ░  
     """)
     print(Fore.CYAN +  "	AI-Powered Penetration Testing Assistant")
-    print(Fore.GREEN + "	DOMPROS Version 1.0.1 | Copyright DeepSeek R1")
+    print(Fore.GREEN + "	DOMPROS Version 1.0.1 | Copyright DeepSeek R1 & Samiux")
     print(Fore.GREEN + "	Dated Feb 28, 2025\n")
     log_activity("system", "Pentest Assistant started.")
 
