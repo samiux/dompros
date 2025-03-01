@@ -98,6 +98,7 @@ def ollama_chat(system_prompt, user_prompt):
         response.raise_for_status()
         
         full_response = ""
+        logging.info("Received Ollama response: ")
         # Process streaming response
         for line in response.iter_lines():
             if line:
