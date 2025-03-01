@@ -4,7 +4,7 @@
 # DOMPROS - AI-Powered Penetrattion Testing Assistant #
 # by DeepSeek R1 & Samiux (MIT License)               #
 #                                                     #
-# Version 0.0.3 Dated Mar 01, 2025                    #
+# Version 0.0.4 Dated Mar 01, 2025                    #
 #                                                     #
 # Powered by DeepSeek R1 and Ollama                   #
 # Website - https://samiux.github.io/dompros          #
@@ -14,6 +14,7 @@ import argparse
 import logging
 import subprocess
 import sys
+import json
 from datetime import datetime
 from colorama import Fore, Style, init
 import requests
@@ -51,7 +52,7 @@ def print_banner():
 ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 {Style.RESET_ALL}
 {Fore.YELLOW}    DOMPROS - AI-Powered Penetration Testing Assistant
-{Fore.WHITE}    Version 0.0.3 | MIT License | Secure your systems!
+{Fore.WHITE}    Version 0.0.4 | MIT License | Secure your systems!
 {Fore.WHITE}    by DeepSeek R1 and Samiux
 {Fore.WHITE}    Dated Mar 01, 2025
 """
@@ -82,7 +83,7 @@ def check_ollama():
         return False
 
 def ollama_chat(system_prompt, user_prompt):
-    """Communicate with Ollama API with enhanced logging"""
+    """Communicate with Ollama API with streaming enabled"""
     logging.info(f"Sending request to Ollama\nSystem Prompt: {system_prompt}\nUser Prompt: {user_prompt}")
     try:
         headers = {"Content-Type": "application/json"}
@@ -90,16 +91,25 @@ def ollama_chat(system_prompt, user_prompt):
             "model": MODEL_NAME,
             "prompt": user_prompt,
             "system": system_prompt,
-            "stream": False
+            "stream": True  # Changed to True
         }
         
-#        response = requests.post(OLLAMA_ENDPOINT, json=data, headers=headers, timeout=60)
-        response = requests.post(OLLAMA_ENDPOINT, json=data, headers=headers, timeout=600000)
+        response = requests.post(OLLAMA_ENDPOINT, json=data, headers=headers, timeout=600000, stream=True)
         response.raise_for_status()
         
-        result = response.json()
-        logging.info(f"Received Ollama response: {result['response']}")
-        return result['response']
+        full_response = ""
+        # Process streaming response
+        for line in response.iter_lines():
+            if line:
+                chunk = json.loads(line.decode('utf-8'))
+                if 'response' in chunk:
+                    full_response += chunk['response']
+                    # Print each chunk as it arrives
+                    print(chunk['response'], end='', flush=True)
+        
+        logging.info(f"Received Ollama response: {full_response}")
+        return full_response
+        
     except Exception as e:
         logging.error(f"Ollama communication failed: {str(e)}")
         return f"Error: {str(e)}"
