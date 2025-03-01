@@ -1,4 +1,4 @@
-!/usr/bin/bash
+＃!/usr/bin/bash
 
 . venv/bin/activate
 ./dompros/dompros.py
