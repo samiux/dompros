@@ -4,7 +4,7 @@
 # DOMPROS - AI-Powered Penetrattion Testing Assistant #
 # by DeepSeek R1 & Samiux (MIT License)               #
 #                                                     #
-# Version 0.0.5 Dated Mar 01, 2025                    #
+# Version 0.0.6 Dated Mar 02, 2025                    #
 #                                                     #
 # Powered by DeepSeek R1 and Ollama                   #
 # Website - https://samiux.github.io/dompros          #
@@ -52,9 +52,9 @@ def print_banner():
 ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 {Style.RESET_ALL}
 {Fore.YELLOW}    DOMPROS - AI-Powered Penetration Testing Assistant
-{Fore.WHITE}    Version 0.0.5 | MIT License | Secure your systems!
+{Fore.WHITE}    Version 0.0.6 | MIT License | Secure your systems!
 {Fore.WHITE}    by DeepSeek R1 and Samiux
-{Fore.WHITE}    Dated Mar 01, 2025
+{Fore.WHITE}    Dated Mar 02, 2025
 """
     print(banner)
     logging.info("Application started with banner display")
@@ -150,6 +150,7 @@ def handle_command(command, initial_args):
             "You are a cybersecurity expert. Analyze search results and provide: "
             "1. Vulnerability analysis 2. Exploit procedure 3. Workable payloads "
             "4. Mitigation strategies. Be technical and precise."
+            "5. If version is given, target to the version number given only."
         ),
         "analyze": (
             "You are a senior penetration tester. Analyze these findings and provide: "
@@ -245,8 +246,9 @@ def main():
                 continue
                 
             response = handle_command(command, args)
-            print(Fore.GREEN + "\n[AI Assistant]\n" + Style.RESET_ALL + response)
-            logging.info(f"AI Response: {response[:40000]}...")  # Log partial response
+            # Print to screen twice as streaming is already logged.  No need now.
+            #print(Fore.GREEN + "\n[AI Assistant]\n" + Style.RESET_ALL + response)
+            logging.info(f"AI Response: {response[:60000]}...")  # Log partial response
             
         except KeyboardInterrupt:
             print(Fore.YELLOW + "\n[!] Use 'exit' to quit properly")
