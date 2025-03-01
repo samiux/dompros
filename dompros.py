@@ -4,7 +4,7 @@
 # DOMPROS - AI-Powered Penetrattion Testing Assistant #
 # by DeepSeek R1 & Samiux (MIT License)               #
 #                                                     #
-# Version 0.0.4 Dated Mar 01, 2025                    #
+# Version 0.0.5 Dated Mar 01, 2025                    #
 #                                                     #
 # Powered by DeepSeek R1 and Ollama                   #
 # Website - https://samiux.github.io/dompros          #
@@ -52,7 +52,7 @@ def print_banner():
 ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 {Style.RESET_ALL}
 {Fore.YELLOW}    DOMPROS - AI-Powered Penetration Testing Assistant
-{Fore.WHITE}    Version 0.0.4 | MIT License | Secure your systems!
+{Fore.WHITE}    Version 0.0.5 | MIT License | Secure your systems!
 {Fore.WHITE}    by DeepSeek R1 and Samiux
 {Fore.WHITE}    Dated Mar 01, 2025
 """
@@ -107,7 +107,8 @@ def ollama_chat(system_prompt, user_prompt):
                     # Print each chunk as it arrives
                     print(chunk['response'], end='', flush=True)
         
-        logging.info(f"Received Ollama response: {full_response}")
+        # Logged during streaming already, not required now.
+        #logging.info(f"Received Ollama response: {full_response}")
         return full_response
         
     except Exception as e:
@@ -179,23 +180,23 @@ def handle_command(command, initial_args):
     logging.info(f"Processing command: {command} with args: {args[:1000]}...")
 
     if command == "search":
-        print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Thinking ...>")
+        print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Processing ...>")
         search_results = search_ddg(args)
         user_prompt = f"Search Query: {args}\nResults:\n{search_results}\nProvide detailed analysis:"
         return ollama_chat(system_prompts["search"], user_prompt)
     
     elif command == "analyze":
-        print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Thinking ...>")
+        print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Processing ...>")
         user_prompt = f"Security Findings:\n{args}\nProvide expert analysis:"
         return ollama_chat(system_prompts["analyze"], user_prompt)
     
     elif command == "brainstorm":
-        print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Thinking ...>")
+        print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Processing ...>")
         user_prompt = f"Problem Statement:\n{args}\nGenerate creative solutions:"
         return ollama_chat(system_prompts["brainstorm"], user_prompt)
     
     elif command == "suggest":
-        print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Thinking ...>")
+        print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Processing ...>")
         search_results = search_ddg(f"latest {args} cybersecurity tools 2024 and 2025")
         user_prompt = f"Tool Requirements: {args}\nSearch Results:\n{search_results}\nRecommend tools:"
         return ollama_chat(system_prompts["suggest"], user_prompt)
