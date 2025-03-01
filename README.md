@@ -151,7 +151,7 @@ deactivate
     DOMPROS - AI-Powered Penetration Testing Assistant
     Version 0.0.3 | MIT License | Secure your systems!
     by DeepSeek R1 and Samiux
-    Dated Mar 1, 2025
+    Dated Mar 01, 2025
 
 Available commands:
   search <query>     - Search for vulnerabilities
