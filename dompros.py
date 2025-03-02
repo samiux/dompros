@@ -149,7 +149,7 @@ def handle_command(command, initial_args):
         "search": (
             "You are a cybersecurity expert. Analyze search results and provide: "
             "1. Vulnerability analysis 2. Exploit procedure 3. Workable payloads "
-            "4. Mitigation strategies. Be technical and precise."
+            "4. Mitigation strategies. Be technical and precise. "
             "5. If version is given, target to the version number given only."
         ),
         "analyze": (
