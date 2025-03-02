@@ -4,7 +4,7 @@
 # DOMPROS - AI-Powered Penetrattion Testing Assistant #
 # by DeepSeek R1 & Samiux (MIT License)               #
 #                                                     #
-# Version 0.0.6 Dated Mar 02, 2025                    #
+# Version 0.0.7 Dated Mar 02, 2025                    #
 #                                                     #
 # Powered by DeepSeek R1 and Ollama                   #
 # Website - https://samiux.github.io/dompros          #
@@ -29,6 +29,7 @@ init(autoreset=True)
 OLLAMA_ENDPOINT = "http://localhost:11434/api/generate"
 OLLAMA_CHECK = "http://localhost:11434/api/tags"
 MODEL_NAME = "deepseek-r1:7b"
+#MODEL_NAME = "deepseek-r1:14b"
 LOG_FILE = "pentest_assistant.log"
 
 # Initialize logging
@@ -52,7 +53,7 @@ def print_banner():
 ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 {Style.RESET_ALL}
 {Fore.YELLOW}    DOMPROS - AI-Powered Penetration Testing Assistant
-{Fore.WHITE}    Version 0.0.6 | MIT License | Secure your systems!
+{Fore.WHITE}    Version 0.0.7 | MIT License | Secure your systems!
 {Fore.WHITE}    by DeepSeek R1 and Samiux
 {Fore.WHITE}    Dated Mar 02, 2025
 """
@@ -121,7 +122,7 @@ def search_ddg(query):
     logging.info(f"Searching DuckDuckGo for: {query}")
     try:
         with DDGS() as ddgs:
-            results = [r for r in ddgs.text(query, max_results=10)]
+            results = [r for r in ddgs.text(query, max_results=5)]
         return "\n".join([f"{i+1}. {r['title']}\n   {r['href']}\n   {r['body']}" for i, r in enumerate(results)])
     except Exception as e:
         logging.error(f"DDG search failed: {str(e)}")
@@ -159,7 +160,7 @@ def handle_command(command, initial_args):
         ),
         "brainstorm": (
             "You are a security researcher. For this problem: "
-            "1. Propose 3 unconventional attack vectors 2. Suggest bypass techniques "
+            "1. Propose 3 possible attack vectors 2. Suggest bypass techniques "
             "3. Recommend obscure tools 4. Provide proof-of-concept ideas."
         ),
         "suggest": (
@@ -184,22 +185,24 @@ def handle_command(command, initial_args):
     if command == "search":
         print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Processing ...>")
         search_results = search_ddg(args)
-        user_prompt = f"Search Query: {args}\nResults:\n{search_results}\nProvide detailed analysis:"
+        user_prompt = f"Search Query: {args}\nSearch Results:\n{search_results}\nProvide detailed analysis:"
         return ollama_chat(system_prompts["search"], user_prompt)
     
     elif command == "analyze":
         print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Processing ...>")
-        user_prompt = f"Security Findings:\n{args}\nProvide expert analysis:"
+        search_results = search_ddg(args)
+        user_prompt = f"Security Findings:\n{args}\nSearch Results:\n{search_results}\nProvide expert analysis:"
         return ollama_chat(system_prompts["analyze"], user_prompt)
     
     elif command == "brainstorm":
         print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Processing ...>")
-        user_prompt = f"Problem Statement:\n{args}\nGenerate creative solutions:"
+        search_results = search_ddg(args)
+        user_prompt = f"Problem Statement:\n{args}\nSearch Results:\n{search_results}\nGenerate creative solutions:"
         return ollama_chat(system_prompts["brainstorm"], user_prompt)
     
     elif command == "suggest":
         print(Fore.GREEN + "\n[AI Assistant]\n\n" + Style.RESET_ALL + "<Processing ...>")
-        search_results = search_ddg(f"latest {args} cybersecurity tools 2024 and 2025")
+        search_results = search_ddg(f"latest {args} cybersecurity tools")
         user_prompt = f"Tool Requirements: {args}\nSearch Results:\n{search_results}\nRecommend tools:"
         return ollama_chat(system_prompts["suggest"], user_prompt)
     
