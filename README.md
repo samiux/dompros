@@ -195,3 +195,4 @@ Feburary 26, 2025, Hong Kong, China
 - [DeepSeek Github](https://github.com/deepseek-ai)  
 - [Ollama](https://ollama.com/)  
 - [Ollama Github](https://github.com/ollama/ollama)  
+- [DeepSeek R1 Distill Deployment on Ubuntu 24.04 LTS](https://samiux.github.io/deepseek-r1.html)  
