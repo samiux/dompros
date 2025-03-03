@@ -196,7 +196,7 @@ def ollama_chat(system_prompt, user_prompt):
                 }
             },
             stream=True,
-            timeout=30
+            timeout=90
         )
         response.raise_for_status()
 
