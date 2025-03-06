@@ -31,7 +31,7 @@ OLLAMA_CHECK = "http://localhost:11434/api/tags"
 
 # AI Model
 MODEL_NAME = "deepseek-r1:7b"
-TEMPERATURE = 0.6
+TEMPERATURE = 0.7
 TOP_P = 0.95
 TOP_K = 50
 GENERATE_LEN = 4096
