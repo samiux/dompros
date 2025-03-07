@@ -256,7 +256,7 @@ def ollama_chat(system_prompt: str, user_prompt: str) -> str:
                     "temperature": config.TEMPERATURE,
                     "top_p": config.TOP_P,
                     "top_k": config.TOP_K,
-                    "generate_len": config.GENERATE_LEN
+                    "num_predict": config.GENERATE_LEN
                 }
             },
             stream=True,
