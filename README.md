@@ -139,38 +139,38 @@ deactivate
 ██╔══██╗██╔═══██╗████╗ ████║██╔══██╗██╔══██╗██╔═══██╗██╔════╝
 ██║  ██║██║   ██║██╔████╔██║██████╔╝██████╔╝██║   ██║███████╗
 ██║  ██║██║   ██║██║╚██╔╝██║██╔═══╝ ██╔══██╗██║   ██║╚════██║
-██████╔╝╚██████╔╝██║ ╚═╝ ██║██║     ██║  ██║╚██████╔╝███████║
-╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+██████╔╝╚██████╔╝██║ ╚═╝ ██║██║      ██║  ██║╚██████╔╝███████║
+╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 
-    DOMPROS - AI-Powered Penetration Testing Assistant
-    Version 0.0.12 | MIT License | Secure your systems!
-    by DeepSeek R1 and Samiux
-    Dated Mar 05, 2025
+DOMPROS - AI-Powered Penetration Testing Assistant
+Version 0.0.14 | MIT License | By DeepSeek R1, Qwen QwQ-32B & Samiux
+Dated Mar 08, 2025
+    
 
+[ DOMPROS Command Reference ]
 
-[ Command Reference ]
+Core Commands:
+  search <query>     - Perform security research via DuckDuckGo
+  analyze            - Analyze security findings
+  brainstorm         - Generate attack ideas and PoCs
+  tools <query>      - Get tool recommendations via DuckDuckGo
+  shelldb <category> - Access command/payload database
 
-Core Commands
-  search <query>    - Security research with DuckDuckGo
-  analyze           - Analyze security findings
-  brainstorm        - Generate attack ideas
-  tools <query>     - Tool recommendations
-  shelldb [category]- Show stored commands/payloads
+Database Categories:
+  webshells reverse_shells linux_priv_esc 
+  windows_priv_esc tunneling payload_generators
+  
+Utility Commands:
+  help        - Show this menu
+  exit        - Quit the application
+  clear       - Clear the screen
+  history     - Show command history
 
-Shell Database Categories
-  webshells         - Executes system commands via GET parameters commands
-  reverse_shells    - Python reverse shell connecting to attacker's IP:PORT commands
-  linux_priv_esc    - Find SUID binaries for privilege escalation commands
-  windows_priv_esc  - Find services with weak permissions commands
-  tunneling         - Port forwarding through firewall commands
-  payload_generators- Generate Linux reverse shell payload commands
+Examples:
+  search 'log4j exploit github'
+  brainstorm 'Windows domain escalation'
+  shelldb reverse_shells
 
-Utility Commands
-  help              - Show this help menu
-  exit              - Exit the program
-
-Example: shelldb reverse_shells
-         search 'apache struts vulnerability'
  
 You: 
 
