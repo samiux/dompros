@@ -5,7 +5,7 @@
 # DOMPROS - AI-Powered Penetration Testing Assistant       #
 # by DeepSeek R1, Qwen QwQ-32B & Samiux | MIT License      #
 #                                                          #
-# powered by Ollama and DeepSeek R1                        #
+# Version 0.0.14 Dated Mar 08, 2025                        #
 ############################################################
 
 import logging
@@ -30,10 +30,6 @@ from datetime import datetime
 # Initialize colorama
 init(autoreset=True)
 
-# Initialize version
-version_no = "0.0.15"
-version_date = "Mar 09, 2025"
-
 # Initialize current year
 def year():
     current_datetime = datetime.now()
@@ -46,10 +42,8 @@ class Config:
     OLLAMA_CHECK = "http://localhost:11434/api/tags"
     MODEL_NAME = "deepseek-r1:7b"
     TEMPERATURE = 0.7
-    #TOP_P = 0.7   # previous value
-    TOP_P = 0.8
-    #TOP_K = 50    # previous value
-    TOP_K = 40
+    TOP_P = 0.95
+    TOP_K = 50
     GENERATE_LEN = 8192
     MAX_RESULTS = 10
     LOG_DIR = "logs"
@@ -433,8 +427,8 @@ def main():
 ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 {Style.RESET_ALL}{Fore.GREEN}
 DOMPROS - AI-Powered Penetration Testing Assistant
-{Fore.WHITE}Version {version_no} | MIT License | By DeepSeek R1, Qwen QwQ-32B & Samiux
-{Fore.WHITE}Dated {version_date}
+{Fore.WHITE}Version 0.0.14 | MIT License | By DeepSeek R1, Qwen QwQ-32B & Samiux
+{Fore.WHITE}Dated Mar 08, 2025
     """)
     
     show_help()
