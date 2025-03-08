@@ -197,6 +197,7 @@ Version 0.0.10 - Mar 03, 2025 Re-designed.  New release.
 Version 0.0.11 - Mar 04, 2025 Enhancement.  
 Version 0.0.12 - Mar 05, 2025 Bug fixed.  
 Version 0.0.13 - Mar 07, 2025 Enhancement.  
+Version 0.0.14 - Mar 08, 2025 Improve system prompts.  
 
 ## License
 
